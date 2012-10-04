@@ -31,20 +31,20 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "SBJsonStreamParser.h"
+#import "KCS_SBJsonStreamParser.h"
 
 typedef enum {
 	SBJsonStreamParserAdapterNone,
 	SBJsonStreamParserAdapterArray,
 	SBJsonStreamParserAdapterObject,
-} SBJsonStreamParserAdapterType;
+} KCS_SBJsonStreamParserAdapterType;
 
 /**
  @brief Delegate for getting objects & arrays from the stream parser adapter
  
  @see The TweetStream example project.
  */
-@protocol SBJsonStreamParserAdapterDelegate
+@protocol KCS_SBJsonStreamParserAdapterDelegate
 
 /**
  @brief Called if a JSON array is found
@@ -52,14 +52,14 @@ typedef enum {
  This method is called if a JSON array is found.
  
  */
-- (void)parser:(SBJsonStreamParser*)parser foundArray:(NSArray*)array;
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundArray:(NSArray*)array;
 
 /**
  @brief Called when a JSON object is found
 
  This method is called if a JSON object is found.
  */
-- (void)parser:(SBJsonStreamParser*)parser foundObject:(NSDictionary*)dict;
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundObject:(NSDictionary*)dict;
 
 @end
 
@@ -116,7 +116,7 @@ typedef enum {
  @endcode
  
 */
-@interface SBJsonStreamParserAdapter : NSObject <SBJsonStreamParserDelegate> {
+@interface KCS_SBJsonStreamParserAdapter : NSObject <KCS_SBJsonStreamParserDelegate> {
 @private
 	NSUInteger depth;
     NSMutableArray *array;
@@ -124,7 +124,7 @@ typedef enum {
 	NSMutableArray *keyStack;
 	NSMutableArray *stack;
 	
-	SBJsonStreamParserAdapterType currentType;
+	KCS_SBJsonStreamParserAdapterType currentType;
 }
 
 /**
@@ -143,6 +143,6 @@ typedef enum {
  @brief Your delegate object
  Set this to the object you want to receive the SBJsonStreamParserAdapterDelegate messages.
  */
-@property (unsafe_unretained) id<SBJsonStreamParserAdapterDelegate> delegate;
+@property (unsafe_unretained) id<KCS_SBJsonStreamParserAdapterDelegate> delegate;
 
 @end

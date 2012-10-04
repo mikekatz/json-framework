@@ -32,52 +32,38 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SBJsonTokeniser.h"
-#import "SBJsonStreamParser.h"
+@class KCS_SBJsonStreamWriter;
 
-@interface SBJsonStreamParserState : NSObject
+@interface KCS_SBJsonStreamWriterState : NSObject
 + (id)sharedInstance;
-
-- (BOOL)parser:(SBJsonStreamParser*)parser shouldAcceptToken:(sbjson_token_t)token;
-- (SBJsonStreamParserStatus)parserShouldReturn:(SBJsonStreamParser*)parser;
-- (void)parser:(SBJsonStreamParser*)parser shouldTransitionTo:(sbjson_token_t)tok;
-- (BOOL)needKey;
-- (BOOL)isError;
-
-- (NSString*)name;
-
+- (BOOL)isInvalidState:(KCS_SBJsonStreamWriter*)writer;
+- (void)appendSeparator:(KCS_SBJsonStreamWriter*)writer;
+- (BOOL)expectingKey:(KCS_SBJsonStreamWriter*)writer;
+- (void)transitionState:(KCS_SBJsonStreamWriter*)writer;
+- (void)appendWhitespace:(KCS_SBJsonStreamWriter*)writer;
 @end
 
-@interface SBJsonStreamParserStateStart : SBJsonStreamParserState
+@interface KCS_SBJsonStreamWriterStateObjectStart : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamParserStateComplete : SBJsonStreamParserState
+@interface KCS_SBJsonStreamWriterStateObjectKey : KCS_SBJsonStreamWriterStateObjectStart
 @end
 
-@interface SBJsonStreamParserStateError : SBJsonStreamParserState
+@interface KCS_SBJsonStreamWriterStateObjectValue : KCS_SBJsonStreamWriterState
 @end
 
-
-@interface SBJsonStreamParserStateObjectStart : SBJsonStreamParserState
+@interface KCS_SBJsonStreamWriterStateArrayStart : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamParserStateObjectGotKey : SBJsonStreamParserState
+@interface KCS_SBJsonStreamWriterStateArrayValue : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamParserStateObjectSeparator : SBJsonStreamParserState
+@interface KCS_SBJsonStreamWriterStateStart : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamParserStateObjectGotValue : SBJsonStreamParserState
+@interface KCS_SBJsonStreamWriterStateComplete : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamParserStateObjectNeedKey : SBJsonStreamParserState
+@interface KCS_SBJsonStreamWriterStateError : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamParserStateArrayStart : SBJsonStreamParserState
-@end
-
-@interface SBJsonStreamParserStateArrayGotValue : SBJsonStreamParserState
-@end
-
-@interface SBJsonStreamParserStateArrayNeedValue : SBJsonStreamParserState
-@end

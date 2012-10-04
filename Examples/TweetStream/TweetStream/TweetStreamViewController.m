@@ -49,14 +49,14 @@
 	// We don't want *all* the individual messages from the
 	// SBJsonStreamParser, just the top-level objects. The stream
 	// parser adapter exists for this purpose.
-	adapter = [[SBJsonStreamParserAdapter alloc] init];
+	adapter = [[KCS_SBJsonStreamParserAdapter alloc] init];
 	
 	// Set ourselves as the delegate, so we receive the messages
 	// from the adapter.
 	adapter.delegate = self;
 	
 	// Create a new stream parser..
-	parser = [[SBJsonStreamParser alloc] init];
+	parser = [[KCS_SBJsonStreamParser alloc] init];
 	
 	// .. and set our adapter as its delegate.
 	parser.delegate = adapter;
@@ -78,11 +78,11 @@
 
 #pragma mark SBJsonStreamParserAdapterDelegate methods
 
-- (void)parser:(SBJsonStreamParser *)parser foundArray:(NSArray *)array {
+- (void)parser:(KCS_SBJsonStreamParser *)parser foundArray:(NSArray *)array {
     [NSException raise:@"unexpected" format:@"Should not get here"];
 }
 
-- (void)parser:(SBJsonStreamParser *)parser foundObject:(NSDictionary *)dict {
+- (void)parser:(KCS_SBJsonStreamParser *)parser foundObject:(NSDictionary *)dict {
 	tweet.text = [dict objectForKey:@"text"];
 }
 

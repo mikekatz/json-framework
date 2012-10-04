@@ -15,8 +15,8 @@
 {
     self = [super init];
     if (self) {
-        _parser = [[SBJsonParser alloc] init];
-        _writer = [[SBJsonWriter alloc] init];
+        _parser = [[KCS_SBJsonParser alloc] init];
+        _writer = [[KCS_SBJsonWriter alloc] init];
         _writer.humanReadable = YES;
         _writer.sortKeys = YES;
     }    

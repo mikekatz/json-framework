@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class SBJsonParser;
-@class SBJsonWriter;
+@class KCS_SBJsonParser;
+@class KCS_SBJsonWriter;
 
 @interface DisplayPrettyController : NSObject {
 @private
-    SBJsonParser *_parser;
-    SBJsonWriter *_writer;
+    KCS_SBJsonParser *_parser;
+    KCS_SBJsonWriter *_writer;
     
     IBOutlet NSTextField *_source;
     IBOutlet NSTextField *_formatted;

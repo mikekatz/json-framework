@@ -29,12 +29,12 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonTokeniser.h"
-#import "SBJsonUTF8Stream.h"
+#import "KCS_SBJsonTokeniser.h"
+#import "KCS_SBJsonUTF8Stream.h"
 
-#define SBStringIsIllegalSurrogateHighCharacter(character) (((character) >= 0xD800UL) && ((character) <= 0xDFFFUL))
-#define SBStringIsSurrogateLowCharacter(character) ((character >= 0xDC00UL) && (character <= 0xDFFFUL))
-#define SBStringIsSurrogateHighCharacter(character) ((character >= 0xD800UL) && (character <= 0xDBFFUL))
+#define KCS_SBStringIsIllegalSurrogateHighCharacter(character) (((character) >= 0xD800UL) && ((character) <= 0xDFFFUL))
+#define KCS_SBStringIsSurrogateLowCharacter(character) ((character >= 0xDC00UL) && (character <= 0xDFFFUL))
+#define KCS_SBStringIsSurrogateHighCharacter(character) ((character >= 0xD800UL) && (character <= 0xDBFFUL))
 
 static int const DECIMAL_MAX_PRECISION = 38;
 static int const DECIMAL_EXPONENT_MAX = 127;
@@ -43,7 +43,7 @@ static int const LONG_LONG_DIGITS = 19;
 
 static NSCharacterSet *kDecimalDigitCharacterSet;
 
-@implementation SBJsonTokeniser
+@implementation KCS_SBJsonTokeniser
 
 @synthesize error = _error;
 @synthesize stream = _stream;
@@ -55,7 +55,7 @@ static NSCharacterSet *kDecimalDigitCharacterSet;
 - (id)init {
     self = [super init];
     if (self) {
-        _stream = [[SBJsonUTF8Stream alloc] init];
+        _stream = [[KCS_SBJsonUTF8Stream alloc] init];
 
     }
 
@@ -68,7 +68,7 @@ static NSCharacterSet *kDecimalDigitCharacterSet;
 }
 
 
-- (sbjson_token_t)match:(const char *)pattern length:(NSUInteger)len retval:(sbjson_token_t)token {
+- (KCS_sbjson_token_t)match:(const char *)pattern length:(NSUInteger)len retval:(KCS_sbjson_token_t)token {
     if (![_stream haveRemainingCharacters:len])
         return sbjson_token_eof;
 
@@ -142,7 +142,7 @@ static NSCharacterSet *kDecimalDigitCharacterSet;
     return YES;
 }
 
-- (sbjson_token_t)getStringToken:(NSObject**)token {
+- (KCS_sbjson_token_t)getStringToken:(NSObject**)token {
     NSMutableString *acc = nil;
 
     for (;;) {
@@ -203,7 +203,7 @@ static NSCharacterSet *kDecimalDigitCharacterSet;
                         return sbjson_token_error;
                     }
 
-                    if (SBStringIsSurrogateHighCharacter(hi)) {
+                    if (KCS_SBStringIsSurrogateHighCharacter(hi)) {
                         unichar lo;
 
                         if (![_stream haveRemainingCharacters:6])
@@ -216,13 +216,13 @@ static NSCharacterSet *kDecimalDigitCharacterSet;
                             return sbjson_token_error;
                         }
 
-                        if (!SBStringIsSurrogateLowCharacter(lo)) {
+                        if (!KCS_SBStringIsSurrogateLowCharacter(lo)) {
                             self.error = @"Invalid low character in surrogate pair";
                             return sbjson_token_error;
                         }
 
                         [acc appendFormat:@"%C%C", hi, lo];
-                    } else if (SBStringIsIllegalSurrogateHighCharacter(hi)) {
+                    } else if (KCS_SBStringIsIllegalSurrogateHighCharacter(hi)) {
                         self.error = @"Invalid high character in surrogate pair";
                         return sbjson_token_error;
                     } else {
@@ -249,7 +249,7 @@ static NSCharacterSet *kDecimalDigitCharacterSet;
     return sbjson_token_eof;
 }
 
-- (sbjson_token_t)getNumberToken:(NSObject**)token {
+- (KCS_sbjson_token_t)getNumberToken:(NSObject**)token {
 
     NSUInteger numberStart = _stream.index;
 
@@ -384,7 +384,7 @@ static NSCharacterSet *kDecimalDigitCharacterSet;
     return sbjson_token_number;
 }
 
-- (sbjson_token_t)getToken:(NSObject **)token {
+- (KCS_sbjson_token_t)getToken:(NSObject **)token {
 
     [_stream skipWhitespace];
 
@@ -393,7 +393,7 @@ static NSCharacterSet *kDecimalDigitCharacterSet;
         return sbjson_token_eof;
 
     NSUInteger oldIndexLocation = _stream.index;
-    sbjson_token_t tok;
+    KCS_sbjson_token_t tok;
 
     switch (ch) {
         case '[':
